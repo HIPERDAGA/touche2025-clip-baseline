@@ -1,0 +1,2 @@
+type: application
+entrypoint: bash tira-entrypoint.sh /input /output
