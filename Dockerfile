@@ -1,9 +1,17 @@
-FROM python:3
+FROM python:3.10-slim
 
-ADD script.py /script.py
-ADD requirements.txt /requirements.txt
+# Instala dependencias
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir --default-timeout=100 -r requirements.txt
 
-RUN pip3 install -r /requirements.txt
+# Copia tu script
+COPY script.py .
 
-ENTRYPOINT [ "python3", "/script.py", "-i", "$inputDataset", "-o", "$outputDir" ]
+# Define variables de entorno por defecto
+ENV inputDataset=/input
+ENV outputDir=/output
 
+# Permite sobreescribir parámetros en tiempo de ejecución
+ENTRYPOINT ["python3", "script.py"]
+CMD ["--input-dir", "/input", "--output-dir", "/output"]
